@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { Typography, Button, Form, Input } from "antd";
+import { Typography, Button, Form, Input, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import Dropzone from "react-dropzone";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -20,6 +22,8 @@ const CategoryOptions = [
 ];
 
 function VideoUploadPage() {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   const [VideoTitle, setVideoTitle] = useState("");
   const [Description, setDescription] = useState("");
   const [Private, setPrivate] = useState(0);
@@ -79,12 +83,39 @@ function VideoUploadPage() {
     });
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const variables = {
+      writer: user.userData._id,
+      title: VideoTitle,
+      description: Description,
+      privacy: Private,
+      filePath: FilePath,
+      category: Category,
+      duration: Duration,
+      thumbnail: ThumbnailPath,
+    };
+
+    axios.post("/api/video/uploadVideo", variables).then((response) => {
+      if (response.data.success) {
+        message.success("성공적으로 업로드를 했습니다.");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
+      } else {
+        alert("비디오 업로드에 실패 했습니다.");
+      }
+    });
+  };
+
   return (
     <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <Title level={2}>Upload Video</Title>
       </div>
-      <Form onSubmit>
+      <Form onSubmit={onSubmit}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {/* { Drop zone} */}
           <Dropzone onDrop={onDrop} multiple={false} maxSize={100000000}>
@@ -154,7 +185,7 @@ function VideoUploadPage() {
         <br />
         <br />
 
-        <Button type="primary" size="large" onClick>
+        <Button type="primary" size="large" onClick={onSubmit}>
           Submit
         </Button>
       </Form>

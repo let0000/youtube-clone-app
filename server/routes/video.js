@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-//const { Video } = require("../models/User");
+const { Video } = require("../models/Video");
 
 const { auth } = require("../middleware/auth");
 const multer = require("multer");
@@ -43,6 +43,26 @@ router.post("/uploadfiles", (req, res) => {
       fileName: res.req.file.filename,
     });
   });
+});
+
+router.post("/uploadVideo", (req, res) => {
+  // 비디오 정보들을 저장한다.
+  const video = new Video(req.body);
+
+  video
+    .save()
+    .then(() => {
+      res.status(200).json({
+        success: true,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.json({
+        success: false,
+        err: err,
+      });
+    });
 });
 
 router.post("/thumbnail", (req, res) => {
