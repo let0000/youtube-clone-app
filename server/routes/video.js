@@ -65,6 +65,27 @@ router.post("/uploadVideo", (req, res) => {
     });
 });
 
+router.get("/getVideos", (req, res) => {
+  //비디오 정보들을 DB에서 가져와서 클라이언트에 보낸다.
+
+  Video.find()
+    .populate("writer")
+    .exec()
+    .then((videos) => {
+      res.status(200).json({
+        success: true,
+        videos,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.json({
+        success: false,
+        err: err,
+      });
+    });
+});
+
 router.post("/thumbnail", (req, res) => {
   // 썸네일 생성하고 비디오 러닝타임도 가져오기
   let thumbsFilePath = "";
