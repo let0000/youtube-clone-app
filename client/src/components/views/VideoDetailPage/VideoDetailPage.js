@@ -3,6 +3,7 @@ import { Row, Col, List, Avatar } from "antd";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import SideVideo from "./Sections/SideVideo";
+import Subscribe from "./Sections/Subscribe";
 
 export default function VideoDetailPage() {
   const { videoId } = useParams();
@@ -32,13 +33,25 @@ export default function VideoDetailPage() {
                 controls
               />
 
-              <List actions>
+              <List.Item
+                style={{ display: "flex" }}
+                actions={[
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Subscribe userTo={VideoDetail.writer._id} />
+                  </div>,
+                ]}
+              >
                 <List.Item.Meta
                   avatar={<Avatar src={VideoDetail.writer.image} />}
                   title={VideoDetail.writer.name}
                   description={VideoDetail.description}
                 />
-              </List>
+              </List.Item>
 
               {/* Comment */}
             </div>
