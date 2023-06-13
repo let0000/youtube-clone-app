@@ -7,12 +7,14 @@ import VideoUploadPage from "./views/VideoUploadPage/VideoUploadPage";
 import NavBar from "./views/NavBar/NavBar";
 import { Suspense } from "react";
 import Footer from "./views/Footer/Footer";
+import VideoDetailPage from "./views/VideoDetailPage/VideoDetailPage";
 
 function App() {
   const AuthLandingPage = Auth(LandingPage, null);
   const AuthLoginPage = Auth(LoginPage, false);
   const AuthRegisterPage = Auth(RegisterPage, false);
   const AuthVideoUploadPage = Auth(VideoUploadPage, true);
+  const AuthVideoDetailPage = Auth(VideoDetailPage, null);
 
   return (
     <Router>
@@ -24,6 +26,7 @@ function App() {
             <Route path="/login" element={<AuthLoginPage />} />
             <Route path="/register" element={<AuthRegisterPage />} />
             <Route path="/video/upload" element={<AuthVideoUploadPage />} />
+            <Route path="/video/:videoId" element={<AuthVideoDetailPage />} />
           </Routes>
         </Suspense>
       </div>

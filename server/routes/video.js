@@ -86,6 +86,25 @@ router.get("/getVideos", (req, res) => {
     });
 });
 
+router.post("/getVideoDetail", (req, res) => {
+  Video.findOne({ _id: req.body.videoId })
+    .populate("writer")
+    .exec()
+    .then((videoDetail) => {
+      res.status(200).json({
+        success: true,
+        videoDetail,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.json({
+        success: false,
+        err: err,
+      });
+    });
+});
+
 router.post("/thumbnail", (req, res) => {
   // 썸네일 생성하고 비디오 러닝타임도 가져오기
   let thumbsFilePath = "";

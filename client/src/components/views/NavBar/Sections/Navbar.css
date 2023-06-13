@@ -78,7 +78,7 @@
 
   .menu__container .ant-menu-item,
   .menu__container .ant-menu-submenu-title {
-    padding: 1px 20px;
+    padding: 8px 20px;
   }
 
   .menu__logo a {
